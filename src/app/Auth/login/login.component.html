@@ -1,0 +1,32 @@
+
+<div class="loginbox"> 
+  <h1 class="Login-heading">Crowne Plaza  </h1>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <!-- <label for="username">Username</label> -->
+        <input type="text" id="MembershipNo" formControlName="MembershipNo" class="form-control  white-input" placeholder="Enter Membership Number">
+        <div *ngIf="loginForm.get('MembershipNo')?.hasError('required') && loginForm.get('MembershipNo')?.touched" class="text-danger">
+          phone number is required.
+        </div>
+        <!-- <div *ngIf="loginForm.get('MobileNo')?.hasError('pattern') && loginForm.get('MobileNo')?.touched" class="text-danger">
+          Invalid MobileNo format.
+        </div> -->
+      </div>
+
+      <div class="form-group otp-gen-btn"><button type="button">Get OTP</button></div>
+
+      
+      
+    
+      <div class="form-group">
+        <!-- <label for="password">Password</label> -->
+        <input type="text" id="otp" formControlName="otp" class="form-control white-input"  placeholder="Enter otp" >
+        <div *ngIf="loginForm.get('otp')?.hasError('required') && loginForm.get('otp')?.touched" class="text-danger">
+          otp is required.
+        </div>
+      </div>
+      <input type="submit" name="" value="Sign in">
+    </form>
+    
+</div>

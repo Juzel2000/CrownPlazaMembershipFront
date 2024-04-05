@@ -1,0 +1,213 @@
+<div *ngIf="isLoading" class="loader-overlay">
+    <mat-spinner></mat-spinner>
+  </div>
+<div class="row-div-main">
+    <div class="row">
+        <h3 class="page-heading" style="margin-bottom: 0px;">Campaign - {{ campaignData?.campaignName }}</h3>
+        <h5  (click)="getBlastData(campaignId)">IDB Emailblast : <span class="blue-underline" >{{ campaignData?.emailBlastName }}</span></h5>
+    </div>
+    <div class="row  equal-height">
+        <div class="col-sm-4">
+            <h4 class="common-label">Contacts</h4>
+            <mat-card class="mat-card matcard">
+                <div class="result-head-content">
+                <ul class="margin-15">
+                    <li>overall : {{ campaignData?.contacts?.overall }}</li>
+                    <li>Priority List :  {{ campaignData?.contacts?.priority }}</li>
+                    <li>pinned :  {{ campaignData?.contacts?.pinned }}</li>
+                    <li>New Contact List ( 1 year) : {{ campaignData?.contacts?.newContactList }}</li>
+                    <li>Existing Contact : {{ campaignData?.contacts?.existingContact }} </li>
+                    <li>Unsubscribe (Existing) : {{ campaignData?.contacts?.unsubscribe_Existing }} </li>
+                </ul>
+                </div>
+            </mat-card>
+        </div>
+        <div class="col-sm-4">
+            <h4 class="common-label">Email Marketing</h4>
+            <mat-card class="mat-card matcard">
+                <div class="result-head-content">
+                <ul class="margin-15" >
+                    <li>Open Rate : {{ campaignData?.emailMarketing?.openRate }}</li>
+                    <li>Click Rate : {{ campaignData?.emailMarketing?.clickRate }}</li>
+                    <li>Bounced Rate : {{ campaignData?.emailMarketing?.bouncedRate }}</li>
+                    <li>Unsubscribe : {{ campaignData?.emailMarketing?.unsubscribe }} </li>
+                </ul>
+                </div>
+            </mat-card>
+        </div>
+        <div class="col-sm-4">
+            <h4 class="common-label">Search Data</h4>
+            <mat-card class="mat-card matcard">
+                <div class="result-head-content">
+                <h5 class="common-label margin-15">Searched Parameters (Industry)</h5>
+                <ul class="margin-15">
+                    <li>Industry: {{ campaignData?.searchData?.industry }} </li>
+                    <li>Country : {{ campaignData?.searchData?.country }} </li>
+                    <li>view more / Edit</li>
+                </ul>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+    
+    
+    <div class="row equal-height" style="padding-top: 33px;">
+        <div class="col-sm-4">
+            <h4 class="common-label">Show Data</h4>
+            <mat-card class="mat-card matcard">
+                <div class="result-head-content">
+                <h5 class="common-label margin-15">Delegates Info</h5>
+                <ul class="margin-15">
+                    <li>All</li>
+                    <li>Current Delegates</li>
+                    <li>Past Delegates</li>
+                </ul>
+                </div>
+            </mat-card>
+        </div>
+        <div class="col-sm-4">
+            <h4 class="common-label">Status</h4>
+            <mat-card class="mat-card matcard">
+                <div class="result-head-content">
+                <ul class="margin-15">
+                    <li>Clicked : {{ campaignData?.status?.clicked }}</li>
+                    <li>Open : {{ campaignData?.status?.open }}</li>
+                    <li>Not Open : {{ campaignData?.status?.notOpen }}</li>
+                    <li>Bounced : {{ campaignData?.status?.bounced }}</li>
+                </ul>
+                </div>
+            </mat-card>
+        </div>
+        <div class="col-sm-4">
+            <h4 class="common-label">Priority</h4>
+            <mat-card class="mat-card matcard">
+                <div class="result-head-content">
+                <ul class="margin-15">
+                    <li> {{ campaignData?.priority?.personLevel }}</li>
+                    <li> {{ campaignData?.priority?.designationLevel }}</li>
+                    <li> {{ campaignData?.priority?.classesWritten }}</li>
+                    <li> {{ campaignData?.priority?.awardRelated }}</li>
+                    <li>view more / Edit</li>
+                </ul>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+    <div class="row">
+        <h3 class="page-heading" style="margin-bottom: 0px;">Target List</h3>
+        <div  class="flex-container">
+            <div style="flex-grow: 8">
+              <mat-form-field style="width: 200px; margin-right: 12px;">
+                    <input matInput #input placeholder="Search" [(ngModel)]="searchTerm"  (keyup.enter)="applyFilter()">
+              </mat-form-field> 
+              
+              <span class="new-org" style="margin-right: 12px;">
+              <button  class="btn-new-Org-small" tabindex="0"  (click)="applyFilter()">search</button>
+              </span>
+          
+              <span class="new-org" style="margin-right: 12px;">
+              <button  class="btn-new-Org-small" tabindex="0"  (click)="clearFilter()">Clear</button>
+              </span>
+
+              <mat-form-field style="width: 200px; margin-right: 12px;" >
+                <mat-select #SelectFilter placeholder="Select Filter"  [(ngModel)]="selectedFilter"  (selectionChange)="onFilterChange($event,campaignId)">
+                  <mat-option value="All">All</mat-option>
+                  <mat-option default value="EmailsIncluded">Emails included</mat-option>
+                  <mat-option value="EmailsNotIncluded">Emails not included</mat-option>       
+                </mat-select>  
+              </mat-form-field>
+
+
+            </div>
+            <div style="flex-grow: 2;text-align: end;">
+              <button class="btn-new-Org-small download_btn" (click)="downloadExcel()">Download Excel</button>
+            </div>
+
+            <!-- <div style="flex-grow: 2;text-align: end;">
+
+            </div> -->
+        </div>
+        <div class="mat-campaign-graphical"> 
+        <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 campaign-graphical" matSort>
+
+         <!-- Expand Column -->
+         <ng-container matColumnDef="expand">
+            <th mat-header-cell  *matHeaderCellDef aria-label="row actions"
+              class="mat-sort-header mat-header-cell cdk-header-cell header-section-matTable ng-tns-c112-659 cdk-column-client_code mat-column-client_code ng-star-inserted">
+              CRM</th>
+              <td mat-cell *matCellDef="let element">
+                <div mat-icon-button aria-label="expand row" (click)="toggleExpanded(element); $event.stopPropagation()">
+                  <!-- Use an img tag with src attribute for the SVG file -->
+                  <img *ngIf="!isExpanded(element)" src="../../../../assets/images/icons/Add.svg" alt="Add Icon"/>
+                  <img *ngIf="isExpanded(element)" src="../../../../assets/images/icons/Add.svg" alt="Remove Icon"/>
+                </div>
+              </td>
+              
+          </ng-container>
+
+          <!-- Other Columns -->
+          <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef style="padding: 14px;" 
+                class="mat-sort-header mat-header-cell cdk-header-cell header-section-matTable ng-tns-c112-659 cdk-column-client_code mat-column-client_code ng-star-inserted">            
+              {{ getColumnHeader(column) }}
+            </th>
+            <td style="padding: 14px; text-align: -webkit-center;" mat-cell *matCellDef="let element"> 
+                <ng-container *ngIf="column === 'followUp'">
+                    <div [class.square]="element[column]" [style.backgroundColor]="element[column] ? 'cadetblue' : ''">
+                      <mat-icon *ngIf="element[column]" style="color: white;">check</mat-icon>
+                    </div>
+                  </ng-container>
+                  
+              <ng-container *ngIf="column === 'activeAI'">
+                <div [style.backgroundColor]="element[column] ? 'green' : 'red'" class="round"></div>
+              </ng-container>
+              <ng-container *ngIf="column === 'pinned'">
+                <!-- <div [style.backgroundColor]="element[column] ? 'green' : 'red'" class="round"></div> -->
+                <div class="center">
+                  <input type="checkbox"  class="checkbox-round"  [checked]="element[column]" (change)="onPinnedCheckboxchange($event,element)" >
+                </div>
+                
+              </ng-container>
+              <ng-container *ngIf="column === 'emailblast'">
+                <div class="square-box">{{ element[column] }}</div>
+              </ng-container>
+
+            <ng-container *ngIf="column === 'priorityTags'">
+                <div class="tag-container">
+                    <div *ngFor="let tag of element[column]" [ngClass]="getTagClass(tag)">
+                    {{ tag }}
+                    </div>
+                </div>
+            </ng-container>
+
+                            
+              <span *ngIf="column !== 'followUp' && column !== 'pinned' && column !== 'activeAI' && column !== 'emailblast' && column !== 'priorityTags'">{{ element[column] }}</span>
+            </td>
+          </ng-container>
+          
+          
+          <!-- Expanded Content Column -->
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length + 1">
+              <div class="example-element-detail" [@detailExpand]="isExpanded(element) ? 'expanded' : 'collapsed'" >
+                <div class="example-element-diagram">
+                  <div *ngIf="isExpanded(element)">
+                    <div>collapse content</div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Header and Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"> </tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      
+          </table>
+          </div>
+          <mat-paginator [length]="200" [pageSizeOptions]="[10, 50, 100,250,500]" aria-label="Select page">
+        </mat-paginator>
+          
+    </div>
+    </div>

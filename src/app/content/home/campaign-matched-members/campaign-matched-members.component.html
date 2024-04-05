@@ -1,0 +1,124 @@
+<div *ngIf="isLoading" class="loader-overlay">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="row-div-main campaign-matched-members">
+  <div class="row">
+    <h3 class="page-heading">Campaign - {{ campaignName }}</h3>
+  </div>
+
+
+<div  class="flex-container">
+  <div style="flex-grow: 8">
+    <mat-form-field style="width: 200px; margin-right: 12px;">
+      <mat-select placeholder="Select Filter" [(ngModel)]="selectedFilter">
+        <mat-option value="firstName">First Name</mat-option>
+        <!-- <mat-option value="lastName">Last Name</mat-option> -->
+        <mat-option value="comName">Company Name</mat-option>
+        <mat-option value="comCountry">Country</mat-option>
+        <mat-option value="perEmail">Email</mat-option>
+        <mat-option value="personSource">Person Sourse</mat-option>
+        <mat-option value="personRole">Person Designation</mat-option>
+        <mat-option value="companyJobType">Company Job Type</mat-option>
+      </mat-select>  
+    </mat-form-field>
+    <mat-form-field style="width: 200px; margin-right: 12px;">
+          <input matInput #input placeholder="Search" [ngModel]="searchTerm"  (keyup.enter)="applyFilter()">
+    </mat-form-field> 
+    
+    <span class="new-org" style="margin-right: 12px;">
+    <button  class="btn-new-Org-small" tabindex="0"  (click)="applyFilter()">search</button>
+    </span>
+
+    <span class="new-org" style="margin-right: 12px;">
+    <button  class="btn-new-Org-small" tabindex="0"  (click)="clearFilter()">Clear</button>
+    </span>
+
+
+    <mat-form-field style="width: 200px; margin-right: 12px;" >
+      <mat-select #SelectFilter placeholder="Select Filter"  [(ngModel)]="selectedEmailFilter"  (selectionChange)="onFilterChange($event,campaignId)">
+        <mat-option value="All">All</mat-option>
+        <mat-option default value="EmailsIncluded">Emails included</mat-option>
+        <mat-option value="EmailsNotIncluded">Emails not included</mat-option>       
+      </mat-select>  
+    </mat-form-field>
+
+
+
+  </div>
+  <div style="flex-grow: 2;text-align: end;">
+    <button class="btn-new-Org-small download_btn" (click)="downloadExcel()">Download Excel</button>
+  </div>
+</div>
+
+  <div class="row">
+    <div class="hrscroll-table">
+      <div class="mat-elevation-z8 tbl-color addopacity">
+        
+        <table mat-table [dataSource]="campaignMembersList" multiTemplateDataRows matSort class="mat-elevation-z8 campaign-matched-members">
+          <div *ngIf="(campaignMembersList.data.length == 0)" class="loading-message">
+            Please wait, the result is generating...
+          </div>
+          <!-- Expand Column -->
+          <ng-container matColumnDef="expand">
+            <th mat-header-cell  *matHeaderCellDef aria-label="row actions"
+              class="mat-sort-header mat-header-cell cdk-header-cell header-section-matTable ng-tns-c112-659 cdk-column-client_code mat-column-client_code ng-star-inserted">
+              CRM</th>
+              <td mat-cell *matCellDef="let element">
+                <div mat-icon-button aria-label="expand row" (click)="toggleExpanded(element); $event.stopPropagation()">
+                  <!-- Use an img tag with src attribute for the SVG file -->
+                  <img *ngIf="!isExpanded(element)" src="../../../../assets/images/icons/Add.svg" alt="Add Icon"/>
+                  <img *ngIf="isExpanded(element)" src="../../../../assets/images/icons/Add.svg" alt="Remove Icon"/>
+                </div>
+              </td>
+              
+          </ng-container>
+
+          <!-- Other Columns -->
+          <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef style="padding: 22px;" 
+              class="mat-sort-header mat-header-cell cdk-header-cell header-section-matTable ng-tns-c112-659 cdk-column-client_code mat-column-client_code ng-star-inserted" >            
+             {{ column === 'firstName' ? 'First Name' : column === 'lastName' ? 'Last Name': column === 'personSource' ? 'Person Source': column === 'personRole' ? 'Person Designation': column === 'companyJobType' ? 'Company JobType' : column=== 'comName' ? 'Company Name' : column=== 'comCountry' ? 'Country' : column=== 'perEmail' ? 'Email' : column  }}</th>
+            <td style="padding: 22px;" mat-cell *matCellDef="let element"> {{element[column]}} </td>
+          </ng-container>
+
+          <!-- Expanded Content Column -->
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length + 1">
+              <div class="example-element-detail" [@detailExpand]="isExpanded(element) ? 'expanded' : 'collapsed'" >
+                <div class="example-element-diagram">
+                  <div *ngIf="isExpanded(element)">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th class="p-2">Person Sourse</th>
+                          <th class="p-2">Person Designation</th>
+                          <th class="p-2">Company Job Type</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr >
+                          <td class="p-2">{{ element['personSource'] }}</td>
+                          <td class="p-2">{{ element['personRole']  }}</td>
+                          <td class="p-2">{{ element['companyJobType']  }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Header and Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"> </tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+        
+        <mat-paginator [length]="200" [pageSizeOptions]="[10, 50, 100,250,500]" aria-label="Select page">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.black-line {
+  border: none;
+  border-top: 4px solid #000;
+  margin: 10px 0;
+}
+
+.dark-black-line {
+  border: none;
+  border-top: 4px solid #000;
+  margin: 20px 0;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  padding: 22px !important;
+}

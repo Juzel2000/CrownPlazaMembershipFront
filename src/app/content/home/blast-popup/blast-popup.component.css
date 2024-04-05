@@ -1,0 +1,21 @@
+.blast-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .blast-table th, .blast-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .blast-table th {
+    background-color: #f2f2f2;
+  }
+  
+  
+  .blast-table tr:hover {
+    background-color: #ddd;
+    cursor: pointer; 
+  }
+  

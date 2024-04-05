@@ -1,0 +1,26 @@
+<div class="loginbox"> <img src="./assets/images/icons/login-logo.png" class="avatar">
+    <h1 class="Login-heading">Data & Marketing Analytics</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-group">
+          <!-- <label for="username">Username</label> -->
+          <input type="text" id="username" formControlName="username" class="form-control  white-input" placeholder="Enter Username">
+          <div *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched" class="text-danger">
+            Username is required.
+          </div>
+          <div *ngIf="loginForm.get('username')?.hasError('username') && loginForm.get('username')?.touched" class="text-danger">
+            Invalid email format.
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <!-- <label for="password">Password</label> -->
+          <input type="password" id="password" formControlName="password" class="form-control white-input"  placeholder="Enter Password" >
+          <div *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched" class="text-danger">
+            Password is required.
+          </div>
+        </div>
+        <input type="submit" name="" value="Sign in">
+      </form>
+      
+</div>

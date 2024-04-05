@@ -1,0 +1,25 @@
+<form *ngIf="filterForm" [formGroup]="filterForm">
+    <mat-form-field>
+      <mat-label>Filter Options</mat-label>
+      <mat-select formControlName="selectedOption">
+        <mat-option value="Begin With">Begin With</mat-option>
+        <mat-option value="End With">End With</mat-option>
+        <mat-option value="LIKE">LIKE</mat-option>
+        <mat-option value="NOT LIKE">NOT LIKE</mat-option>
+      </mat-select>
+      <mat-error *ngIf="filterForm.get('selectedOption')?.invalid && filterForm.get('selectedOption')?.touched">
+        Filter option is required
+      </mat-error>
+    </mat-form-field>
+    
+    <mat-form-field class="margin-22" >
+      <input matInput placeholder="Filter Value" formControlName="filterValue">
+      <mat-error *ngIf="filterForm.get('filterValue')?.invalid && filterForm.get('filterValue')?.touched">
+        Filter value is required
+      </mat-error>
+    </mat-form-field>
+    
+    <button mat-button class="btn-new-Org-small margin-22" (click)="save()">Save</button>
+    <button mat-icon-button (click)="closeModal()" class="btn-new-Org-small margin-22" >close</button>
+  </form>
+  

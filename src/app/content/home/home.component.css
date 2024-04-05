@@ -1,0 +1,45 @@
+
+.main-body{
+  padding: 40px;
+  overflow: hidden;
+}
+
+.content {
+  padding: 47px 0px 0px 0px;
+}
+
+.bg-light {
+  position: fixed;
+  width: 100%;
+  background-color:white!important;
+  border-bottom: 1px solid #f8f8f8;
+}
+.navbar-light .navbar-brand {
+font-weight: bold;
+/* letter-spacing: 1px; */
+font-size: 24px;
+color: black;
+}
+
+.ss{
+    height: 100%!important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
+    position: inherit;
+    top: 0;
+}
+.margin-logout{
+  margin-right: 45px;
+}
+@media screen and (max-width: 767.98px){
+  .margin-logout{
+    margin-right: 35px;
+  }
+
+   
+.navbar-light .navbar-brand {
+  letter-spacing: 0px;
+  font-size: 13px;
+}
+}

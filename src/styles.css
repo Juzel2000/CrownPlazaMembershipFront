@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+@import url(./assets/css/common.css);
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+
+body {
+    display: block;
+    margin: 0px;
+    /* font-family: 'Open Sans'!important; */
+    font-family: "Open Sans", sans-serif !important;
+    font-optical-sizing: auto !important;
+  }
+  
+  html,
+  body {
+    height: 100%;
+    font-family: "Open Sans", sans-serif !important;
+    font-optical-sizing: auto !important;
+  }
+  
+  body {
+    margin: 0;
+    font-family: "Open Sans", sans-serif !important;
+    font-optical-sizing: auto !important;
+  }

@@ -1,0 +1,364 @@
+<div *ngIf="isLoading" class="loader-overlay">
+  <mat-spinner></mat-spinner>
+</div>
+  <div  class="flex-container row-div sticky-div">
+    <div style="flex-grow: 8">
+      <h3 class="page-heading" style="width: 200px; margin-right: 12px;"> Edit Campaign</h3>
+    </div>
+    <div style="flex-grow: 2;text-align: end;">
+      <button (click)="onUpdateButtonClick()" class="btn-new-Org-small red_save_btn" style="margin-right: 0px;">Update Campaign</button>
+      <button (click)="onGenerateButtonClick()"  class="btn-new-Org-small  red_save_btn">Generate Result</button>
+    </div>
+  </div>
+
+
+  <form #nameForm="ngForm">
+    <div class="row row-div-header details-div">
+      <div class="form-group col-sm-4">
+        <label for="inputdefault" class="common-label">Campaign Name</label>
+        <input class="form-control input-box" id="name" type="text" name="name" [(ngModel)]="name" #nameInput="ngModel"
+          placeholder="Campaign Name" required=""  (keydown.enter)="$event.preventDefault()">
+        <div *ngIf="nameInput.invalid && nameInput.touched" class="alert alert-danger">Campaign Name is required.</div>
+  
+      </div>
+    <div class="form-group col-sm-4">
+      <label for="inputdefault" class="common-label">Start Date</label>
+      <mat-form-field class="form-control input-box" >
+        <input matInput [matDatepicker]="startDatePicker" id="startDate" name="startDate" [(ngModel)]="startDate"  #startDateInputRef="ngModel" required>
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+      <div *ngIf="startDateInputRef.invalid && startDateInputRef.touched" class="alert alert-danger">Start Date is required.</div>
+    </div>
+
+
+    <div class="form-group col-sm-4">
+      <label for="inputdefault" class="common-label">End Date</label>
+      <mat-form-field  class="form-control input-box" >
+        <input matInput [matDatepicker]="endDatePicker" id="endDate"  name="endDate" [(ngModel)]="endDate"   #endDateInputRef="ngModel" required>
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+      <div *ngIf="endDateInputRef.invalid && endDateInputRef.touched" class="alert alert-danger">End Date is required.</div>
+    </div>
+    
+    </div>
+
+     
+  
+  <div class="row row-div-header details-div">
+    <div class="form-group col-sm-4">
+      <label for="inputdefault" class="common-label">Group</label>
+      <mat-form-field class="form-control input-box">
+        <input matInput aria-label="Country" [matAutocomplete]="autogroup" [formControl]="groupControl" required (keydown.enter)="$event.preventDefault()" />
+        <mat-autocomplete #autogroup="matAutocomplete">
+          <mat-option *ngFor="let group of data.group" [value]="group.name"   [ngClass]="{'selected-option': group.id == selectedGroup}" (click)="onSelect(group.name,group.id,'group')">{{ group.name }}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+  </div>
+  <div class="form-group col-sm-4">
+    <label for="inputdefault" class="common-label">Group Category</label>
+    <mat-form-field class="form-control input-box">
+      <input matInput aria-label="Country" [matAutocomplete]="autogroupCategory" [formControl]="groupCategoryControl" required (keydown.enter)="$event.preventDefault()"/>
+      <mat-autocomplete #autogroupCategory="matAutocomplete">
+        <mat-option *ngFor="let groupCategory of groupCategoryOfGroup" [value]="groupCategory.name"   [ngClass]="{'selected-option': groupCategory.id == selectedGroupCategory}" (click)="onSelect(groupCategory.name,groupCategory.id,'groupCategory')">
+          <span>{{ groupCategory.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+</div>
+<div class="form-group col-sm-4">
+  <label for="inputdefault" class="common-label">Data Type</label>
+  <mat-form-field class="form-control input-box">
+    <input matInput aria-label="Country" [matAutocomplete]="autoDataType" [formControl]="dataTypeControl" required (keydown.enter)="$event.preventDefault()"/>
+    <mat-autocomplete #autoDataType="matAutocomplete">
+      <mat-option *ngFor="let dataType of data.dataType" [value]="dataType.name"   [ngClass]="{'selected-option': dataType.name == selectedDataType}" (click)="onSelect(dataType.id,dataType.id,'dataType')">
+        <span>{{ dataType.name }}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+  </div>
+
+
+    <div *ngIf="data">
+      <div class="row row-div equal-height">
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header checkbox-input">
+              <div class="form-sub-head">Country Group</div>
+            </div>
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllCountryGroupCheckbox (change)="onSelectAllCountryGroupChange($event)"> Select All
+            </label>
+            <div class="content scrollable-content">
+              <div *ngFor="let countryGroup of data.countryGroup">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ countryGroup.countryGroupName }}">
+                  <input type="checkbox" [value]="countryGroup.id"  [checked]="countryGroup.isSelected" 
+                    (change)="onCountryGroupCheckboxChange($event, countryGroup)">
+                  {{ countryGroup.countryGroupName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Company Group</div>
+            </div> 
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllCompanyGroupCheckbox (change)="onSelectAllCompanyGroupChange($event)"> Select All
+            </label>
+            <div class="content scrollable-content">
+              <div *ngFor="let companyGroup of data.companyGroup">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ companyGroup.companyGroupName }}">
+                  <input type="checkbox" [value]="companyGroup.id" [checked]="companyGroup.isSelected"  
+                    (change)="onCompanyGroupCheckboxChange($event, companyGroup)">
+                  {{ companyGroup.companyGroupName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Company (Classes Written)</div>
+            </div>
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllCompanyClassesWrittenCheckbox (change)="onSelectAllCompanyClassesWrittenChange($event)"> Select All
+            </label>
+            <div class="strict-checkbox-container">
+            <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #strictCheckboxCompanyClassesWritten (change)="onSelectStrictCheckbox($event,'companyClassesWritten')"> Strict
+            </label>
+            </div>
+            <div class="content scrollable-content">
+              <div *ngFor="let companyClassesWritten of data.companyClassesWritten">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ companyClassesWritten.companyClassesName }}">
+                  <input type="checkbox" [value]="companyClassesWritten.id"  [checked]="companyClassesWritten.isSelected" 
+                    (change)="onCompanyClassesWrittenCheckboxChange($event, companyClassesWritten)"companyClassesWritten>
+                  {{ companyClassesWritten.companyClassesName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Person Source</div>
+            </div>
+            <div class="strict-checkbox-container-des">
+            <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Strict">
+              <input type="checkbox" #strictCheckboxPersonSource (change)="onSelectStrictCheckbox($event,'personSource')"> Strict
+            </label>
+            </div>
+            <div class="content scrollable-content">
+              <div *ngFor="let personSource of data.personSource">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ personSource.personSourceName }}">
+                  <input type="checkbox" [value]="personSource.id"  [checked]="personSource.isSelected" 
+                    (change)="onPersonSourceCheckboxChange($event, personSource)">
+                  {{ personSource.personSourceName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+  
+      <div class="row row-div equal-height">
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header checkbox-input">
+              <div class="form-sub-head">Country</div>
+            </div>
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllCountryCheckbox (change)="onSelectAllCountryChange($event)"> Select All
+            </label>
+            <div class="content scrollable-content">
+              <div *ngFor="let country of data.country">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ country.countryName }}">
+                  <input type="checkbox" [value]="country.id"  [checked]="country.isSelected"  (change)="onCountryCheckboxChange($event, country)">
+                  {{ country.countryName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Company Job Type (Secondary)</div>
+            </div>
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllCompanyJobTypeCheckbox (change)="onSelectAllCompanyJobTypeChange($event)"> Select All
+            </label>
+            <div class="content scrollable-content">
+              <div *ngFor="let companyJobType of data.companyJobType">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ companyJobType.jobTypeName }}">
+                  <input type="checkbox" [value]="companyJobType.id"  [checked]="companyJobType.isSelected" 
+                    (change)="onCompanyJobTypeCheckboxChange($event, companyJobType)">
+                  {{ companyJobType.jobTypeName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Company Name</div>
+            </div>
+            <div class="strict-checkbox-container-des">
+            <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Strict">
+              <input type="checkbox" #strictCheckboxCompany (change)="onSelectStrictCheckbox($event,'company')"> Strict
+            </label>
+            </div>
+            <div class="content scrollable-content">
+              <div *ngFor="let company of data.company">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ company.company }}">
+                  <input type="checkbox" [value]="company.id"  [checked]="company.isSelected"  (change)="onCompanyCheckboxChange($event, company)">
+                  {{ company.company }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Person Designation</div>
+            </div>
+            <div class="strict-checkbox-container-des">
+            <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Strict">
+              <input type="checkbox" #strictCheckboxPersonDesignation (change)="onSelectStrictCheckbox($event,'personDesignation')"> Strict
+            </label>
+            </div>
+            <div class="content-custom">
+              <button mat-button  (click)="openFilterPopup()" class="custom-filter">Add Custom Filter</button>
+            </div>
+            <div class="content-custom scrollable-content-custom ">          
+              <div *ngFor="let filter of filterValuesPersonDesignation"  class="filter-item row">
+                <div class="col-sm-8">
+                {{ filter.option }} - {{ filter.value }}
+              </div>
+              <div class="col-sm-4">
+                <span>
+                  <mat-icon (click)="openFilterPopup(filter)">edit</mat-icon>
+                  <mat-icon (click)="deleteFilter(filter)">delete</mat-icon>
+                </span>
+                </div>
+              
+                <br>
+              </div>
+            </div>
+            <div class="content scrollable-content">
+              <div *ngFor="let personDesignation of data.personDesignation">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ personDesignation.personDesignationName }}">
+                  <input type="checkbox" [value]="personDesignation.id"  [checked]="personDesignation.isSelected" 
+                    (change)="onPersonDesignationCheckboxChange($event, personDesignation)">
+                  {{ personDesignation.personDesignationName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+  
+  
+      <div class="row row-div equal-height">      
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header checkbox-input">
+              <div class="form-sub-head">Conference (Past Delegates)</div>
+            </div>
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllConferenceCheckbox (change)="onSelectAllConferenceChange($event)"> Select All
+            </label>
+            <div class="content scrollable-content">
+              <div *ngFor="let conference of data.conference">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ conference.conferenceName }}">
+                  <input type="checkbox" [value]="conference.id"  [checked]="conference.isSelected" 
+                    (change)="onConferenceNameCheckboxChange($event, conference)">
+                  {{ conference.conferenceName }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div> <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header checkbox-input">
+              <div class="form-sub-head">Subscribers </div>
+            </div>
+            <div class="strict-checkbox-container-des">
+            <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Strict">
+              <input type="checkbox" #strictCheckboxSubscribersSection (change)="onSelectStrictCheckbox($event,'subscribers')"> Strict
+            </label>
+            </div>
+            <div class="content scrollable-content">
+              <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Subscriber">
+                <input type="checkbox" (change)="onSubscriberCheckboxChange($event,'subscribers')" #strictCheckboxSubscribers> 
+                Subscribers Only
+              </label>
+              <br>
+              <label class="checkbox-label checkbox-label-sub dottext" data-placement="bottom" data-toggle="tooltip" title="Non-Subscriber">
+                <input type="checkbox" (change)="onSubscriberCheckboxChange($event,'nonSubscribers')" #strictCheckboxNonSubscribersSection>
+                Non-Subscribers Only
+              </label>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Awards</div>
+            </div>
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllAwardCheckbox (change)="onSelectAllAwardChange($event)"> Select All
+            </label>
+            <div class="content scrollable-content">
+              <div *ngFor="let award of data.award">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ award.award }}">
+                  <input type="checkbox" [value]="award.id"  [checked]="award.isSelected"  (change)="onAwardCheckboxChange($event, award)">
+                  {{ award.award }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-3 col-padding">
+          <mat-card class="matcard">
+            <div class="header  checkbox-input">
+              <div class="form-sub-head">Top Readers (Past Years)</div>
+            </div>
+            <label class="select-all-check checkbox-label dottext" data-placement="bottom" data-toggle="tooltip" title="Select All">
+              <input type="checkbox" #selectAllTopReadersCheckbox (change)="onSelectAllTopReadersChange($event)"> Select All
+            </label>
+            <div class="content scrollable-content">
+              <div *ngFor="let topReaders of data.topReaders">
+                <label class="checkbox-label dottext" data-placement="bottom" data-toggle="tooltip"
+                  title="{{ topReaders.topReader }}">
+                  <input type="checkbox" [value]="topReaders.id"  [checked]="topReaders.isSelected" 
+                    (change)="onTopReadersCheckboxChange($event, topReaders)"   [checked]="topReaders.isSelected">
+                  {{ topReaders.topReader }}
+                </label>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  
+  </form>

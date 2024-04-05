@@ -1,0 +1,102 @@
+.blue-underline{
+    color: #1967d2;
+    text-decoration: underline;
+    cursor: pointer; 
+
+}
+.margin-15{
+    margin: 15px;
+}
+.mat-campaign-graphical{
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.round {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+  .square {
+    width: 23px;
+    height: 23px;
+    background-color: cadetblue;
+  }
+  .square-box {
+    width: 77px;
+    height: 21px;
+    border: 1px solid #000;
+    text-align: center;
+  }
+  
+  .tag-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .tag-container div {
+    margin-right: 8px; /* Adjust as needed */
+    margin-bottom: 8px; /* Adjust as needed */
+  }
+  
+  .tag-container div:last-child {
+    margin-right: 0;
+  }
+  
+  .blue-square,
+  .lightblue-square,
+  .lightviolet-square,
+  .default-square,
+  .red-square {
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .red-square{
+    background-color: rgb(222, 133, 115);
+  }
+  
+  .blue-square {
+    background-color: blue;
+    color: white;
+  }
+  
+  .lightblue-square {
+    background-color: lightblue;
+  }
+  
+  .lightviolet-square {
+    background-color: violet;
+  }
+  
+  .default-square {
+    background-color: wheat;
+  }
+
+  .center {
+    text-align: center;
+}
+
+
+/* #specifyColor {
+  accent-color: red;
+} */
+
+.checkbox-round {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 2px solid #ddd;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.checkbox-round:checked {
+  background-color: red;
+}
+
+  

@@ -1,0 +1,172 @@
+<div class="row-div-main">
+<div class="row">
+    <h3 class="page-heading">Campaign - Motor Conference 2023</h3>
+</div>
+<div class="row  equal-height">
+    <div class="col-sm-4">
+        <h4 class="common-label">Contacts</h4>
+        <mat-card class="mat-card matcard">
+            <div class="result-head-content">
+            <ul>
+                <li>overall : 40,000</li>
+                <li>Priority List : 6500</li>
+                <li>pinned : 3000</li>
+                <li>New Contact List ( 1 year) : 5% (135)</li>
+                <li>Existing Contact : 90%</li>
+                <li>Unsubscribe (Existing) : 2300 </li>
+            </ul>
+            </div>
+        </mat-card>
+    </div>
+    <div class="col-sm-4">
+        <h4 class="common-label">Email Marketing</h4>
+        <mat-card class="mat-card matcard">
+            <div class="result-head-content">
+            <ul>
+                <li>Open Rate : 20%</li>
+                <li>Click Rate : 65%</li>
+                <li>Bounced Rate : 30%</li>
+                <li>Unsubscribe : 2 </li>
+            </ul>
+            </div>
+        </mat-card>
+    </div>
+    <div class="col-sm-4">
+        <h4 class="common-label">Search Data</h4>
+        <mat-card class="mat-card matcard">
+            <div class="result-head-content">
+            <h5 class="common-label">Searched Parameters (Industry)</h5>
+            <ul>
+                <li>Industry: 20%</li>
+                <li>Country : 65%</li>
+                <li>view more / Edit</li>
+            </ul>
+            </div>
+        </mat-card>
+    </div>
+</div>
+
+
+<div class="row equal-height" style="padding-top: 33px;">
+    <div class="col-sm-4">
+        <h4 class="common-label">Show Data</h4>
+        <mat-card class="mat-card matcard">
+            <div class="result-head-content">
+            <h5 class="common-label">Delegates Info</h5>
+            <ul>
+                <li>All</li>
+                <li>Current Delegates</li>
+                <li>Past Delegates</li>
+            </ul>
+            </div>
+        </mat-card>
+    </div>
+    <div class="col-sm-4">
+        <h4 class="common-label">Status</h4>
+        <mat-card class="mat-card matcard">
+            <div class="result-head-content">
+            <ul>
+                <li>Clicked</li>
+                <li>Open</li>
+                <li>Not Open</li>
+                <li>Bounced</li>
+            </ul>
+            </div>
+        </mat-card>
+    </div>
+    <div class="col-sm-4">
+        <h4 class="common-label">Priority</h4>
+        <mat-card class="mat-card matcard">
+            <div class="result-head-content">
+            <ul>
+                <li>Person Level : C-suite, Managers</li>
+                <li>Designation Level : Motor Role, Tech Role</li>
+                <li>Classes Written - Motor , Aviation/ Transit</li>
+                <li>Award Related - Past Winner ,Past Finalist</li>
+                <li>view more / Edit</li>
+            </ul>
+            </div>
+        </mat-card>
+    </div>
+</div>
+<hr class="black-line">
+<div class="row">
+<div class="col-sm-4">
+<div class="search-box">
+  <input type="text" placeholder="Search..." />
+</div>
+</div>
+
+<div class="col-sm-5" style="text-align: right;">
+    <!-- <button class="save-button">Save as template</button> -->
+</div>
+
+<div class="col-sm-3" style="text-align: right;">
+    <button (click)="downloadExcel()" class="download_btn">Download Excel</button>
+</div>
+</div>
+
+<div class="row">
+    <div class="hrscroll-table">
+        <div class="mat-elevation-z8 tbl-color addopacity">
+            <table mat-table [dataSource]="campaignMembersList" multiTemplateDataRows matSort class="mat-elevation-z8">
+
+                <!-- Expand Column -->
+                <ng-container matColumnDef="expand">
+                  <th mat-header-cell  *matHeaderCellDef aria-label="row actions"
+                    class="mat-sort-header mat-header-cell cdk-header-cell header-section-matTable ng-tns-c112-659 cdk-column-client_code mat-column-client_code ng-star-inserted">
+                    CRM</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button aria-label="expand row"
+                      (click)="toggleExpanded(element); $event.stopPropagation()">
+                      <mat-icon *ngIf="!isExpanded(element)">add</mat-icon>
+                      <mat-icon *ngIf="isExpanded(element)">remove</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+      
+                <!-- Other Columns -->
+                <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+                  <th mat-sort-header mat-header-cell *matHeaderCellDef style="padding: 22px;" 
+                    class="mat-sort-header mat-header-cell cdk-header-cell header-section-matTable ng-tns-c112-659 cdk-column-client_code mat-column-client_code ng-star-inserted">            
+                   {{ column === 'firstName' ? 'First Name' : column === 'lastName' ? 'Last Name' : column=== 'comName' ? 'Company Name' : column=== 'comCountry' ? 'Country' : column=== 'perEmail' ? 'Email' : column  }}</th>
+                  <td style="padding: 22px;" mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                </ng-container>
+      
+                <!-- Expanded Content Column -->
+                <ng-container matColumnDef="expandedDetail">
+                  <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length + 1">
+                    <div class="example-element-detail" [@detailExpand]="isExpanded(element) ? 'expanded' : 'collapsed'" >
+                      <div class="example-element-diagram">
+                        <div *ngIf="isExpanded(element)">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Date</th>
+                                <th>About</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let detail of element.detailData">
+                                <td>{{ detail.date }}</td>
+                                <td>{{ detail.about }}</td>
+                                <td>{{ detail.status }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </ng-container>
+      
+                <!-- Header and Row Definitions -->
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"> </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+              </table>
+</div>
+</div>
+</div>
+</div>

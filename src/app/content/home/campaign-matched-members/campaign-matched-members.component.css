@@ -1,0 +1,25 @@
+.actions-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  border-bottom-width: 1px !important;
+  border-bottom-style: solid !important;
+}
+
+tr.mat-header-row {
+  height: 66px !important;
+}
